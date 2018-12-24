@@ -8,6 +8,12 @@ import org.springframework.web.client.RestTemplate;
 import springproject.ziprest.dto.ZipCodeDto;
 import springproject.ziprest.service.ZipCodeService;
 
+/**
+ * 郵便番号検索サービスの実装クラス。
+ *
+ * @author tetsuya.okuyama
+ *
+ */
 @Service
 public class ZipCodeServiceImpl implements ZipCodeService {
 
