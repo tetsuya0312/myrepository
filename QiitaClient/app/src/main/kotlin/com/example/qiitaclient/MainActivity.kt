@@ -14,6 +14,7 @@ import com.google.gson.FieldNamingPolicy
 import com.google.gson.GsonBuilder
 import com.trello.rxlifecycle.components.support.RxAppCompatActivity
 import com.trello.rxlifecycle.kotlin.bindToLifecycle
+import kotterknife.bindView
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -27,23 +28,23 @@ class MainActivity : RxAppCompatActivity() {
     @Inject // 依存性の注入
     lateinit var articleClient: ArticleClient
 
+    // View オブジェクト
+    private val listView: ListView by bindView(R.id.list_view)
+    private val progressBar: ProgressBar by bindView(R.id.progress_bar)
+    private val queryEditText: EditText by bindView(R.id.query_edit_text)
+    private val searchButton: Button by bindView(R.id.search_button)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         (application as QiitaClientApp).component.inject(this)
         setContentView(R.layout.activity_main)
 
-        // View オブジェクトの取得
-        val listView = findViewById<ListView>(R.id.list_view)
-        val progressBar = findViewById<ProgressBar>(R.id.progress_bar)
-        val queryEditText = findViewById<EditText>(R.id.query_edit_text)
-        val searchButton = findViewById<Button>(R.id.search_button)
-
         val listAdapter = ArticleListAdpter(applicationContext)
         listView.adapter = listAdapter
         // 記事画面遷移処理の設定
         listView.setOnItemClickListener { _, _, position, _ ->
-            val article = listAdapter.articles[position]
-            ArticleActivity.intent(this, article).let { startActivity(it) }
+            val intent = ArticleActivity.intent(this, listAdapter.articles[position])
+            startActivity(intent)
         }
 
         // 検索処理の設定
