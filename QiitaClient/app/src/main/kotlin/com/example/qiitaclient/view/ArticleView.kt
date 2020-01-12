@@ -4,11 +4,20 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.FrameLayout
-import com.bumptech.glide.Glide
+import androidx.databinding.BindingMethod
+import androidx.databinding.BindingMethods
+import androidx.databinding.DataBindingUtil
 import com.example.qiitaclient.R
+import com.example.qiitaclient.databinding.ViewArticleBinding
 import com.example.qiitaclient.model.Article
-import kotlinx.android.synthetic.main.view_article.view.*
 
+@BindingMethods(
+    BindingMethod( // 内側のアノテーションには@が不要
+        type = Article::class,
+        attribute = "bind:article",
+        method = "setArticle"
+    )
+)
 class ArticleView : FrameLayout {
 
     constructor(context: Context) : super(context)
@@ -21,13 +30,12 @@ class ArticleView : FrameLayout {
     constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int, defStyleRes: Int) :
             super(context, attrs, defStyleAttr, defStyleRes)
 
-    init {
-        LayoutInflater.from(context).inflate(R.layout.view_article, this)
-    }
+    private val binding: ViewArticleBinding = DataBindingUtil.inflate(
+        LayoutInflater.from(context), R.layout.view_article,
+        this, true
+    )
 
     fun setArticle(article: Article) {
-        title_text_view.text = article.title
-        user_name_text_view.text = article.user.name
-        Glide.with(context).load(article.user.profileImageUrl).into(profile_image_view)
+        binding.article = article
     }
 }

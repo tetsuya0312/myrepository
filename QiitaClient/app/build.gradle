@@ -30,6 +30,10 @@ android {
         main.java.srcDirs += "src/main/kotlin"
         androidTest.java.srcDirs += "src/androidTest/kotlin"
     }
+
+    dataBinding {
+        enabled = true
+    }
 }
 
 kapt {
@@ -70,6 +74,11 @@ dependencies {
     androidTestImplementation "com.crittercism.dexmaker:dexmaker-mockito:1.4"
 
     implementation 'com.jakewharton:kotterknife:0.1.0-SNAPSHOT'
+
+
+    kapt 'com.android.databinding:compiler:2.1.2'
+    // Dagger 2.4と併用する場合に必要
+    kapt 'com.google.guava:guava:19.0'
 }
 
 repositories {
